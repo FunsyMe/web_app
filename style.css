@@ -27,6 +27,7 @@ body {
   align-items: center;
   justify-content: center;
   transform-origin: 50% 100%;
+  overflow-y: hidden;
   user-select: none;
 }
 
