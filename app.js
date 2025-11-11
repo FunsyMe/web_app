@@ -1,4 +1,4 @@
-document.addEventListener('mousemove', (event) => {
+document.addEventListener('mousemove', function(event) {
     const centerX = window.innerWeight / 2;
     const relativeX = event.clientX - centerX;
 
