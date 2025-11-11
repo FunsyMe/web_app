@@ -1,23 +1,20 @@
 const mainCard = document.querySelector('.main-card');
 
-let isDragging = false;
+let isMouseDown = false;
 let animationId = null;
-let currentX = 0;
+let currentMouseX = 0;
 
-function startDrag(event) {
-    isDragging = true;
-    event.preventDefault();
-
-    currentX = event.touches[0].clientX;
-    mainCard.style.boxShadow = '0 0 40px 4px #0080ce60';
-    mainCard.style.transition = 'none';
-
+function startTouch(event) {
+    isTouching = true;
+    currentTouchX = event.touches[0].clientX;
+    mainCard.style.boxShadow = '0 0 40px 4px #0080ce60'
+    
     function animate() {
-        if (!isDragging) return;
+        if (!isTouching) return;
         
         const centerX = window.innerWidth / 2;
-        const relativeX = currentX - centerX;
-
+        const relativeX = currentTouchX - centerX;
+        
         if (relativeX < -25) {
             mainCard.style.transform = 'rotate(-4deg)';
         }
@@ -34,26 +31,24 @@ function startDrag(event) {
     animate();
 }
 
-function moveDrag(event) {
-    if (isDragging) {
-        event.preventDefault();
-        currentX = event.touches[0].clientX;
+function moveTouch(event) {
+    if (isTouching) {
+        currentTouchX = event.touches[0].clientX;
     }
 }
 
-function stopDrag() {
-    isDragging = false;
+function stopTouch() {
+    isTouching = false;
 
-    mainCard.style.transform = 'translateX(0px) rotate(0deg)';
-    mainCard.style.boxShadow = 'none';
-    mainCard.style.transition = 'all 0.4s ease';
+    mainCard.style.transform = 'rotate(0deg)';
+    mainCard.style.boxShadow = 'none'
 
     if (animationId) {
         cancelAnimationFrame(animationId);
     }
 }
 
-mainCard.addEventListener('touchstart', startDrag, { passive: false });
-mainCard.addEventListener('touchmove', moveDrag, { passive: false });
-mainCard.addEventListener('touchend', stopDrag);
-mainCard.addEventListener('touchcancel', stopDrag);
+mainCard.addEventListener('touchstart', startTouch);
+mainCard.addEventListener('touchmove', moveTouch);
+mainCard.addEventListener('touchend', stopTouch);
+mainCard.addEventListener('touchcancel', stopTouch);
