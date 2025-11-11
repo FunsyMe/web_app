@@ -16,6 +16,7 @@ body {
 .main-card {
   width: 80%;
   max-width: 600px;
+  transform: rotate(0deg);
   position: relative;
   aspect-ratio: 0.65 / 0.85;
   border-radius: 20px;
@@ -25,12 +26,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  transform-origin: 50% 100%;
 }
 
 .main-card:hover {
   transform: translateY(-20px) scale(1.02);
-  cursor: pointer;
-  box-shadow: 0 0 40px 4px #0080ce60;
 }
 
 .habit h2 {
