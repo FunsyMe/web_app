@@ -52,7 +52,10 @@ function startInteraction(state, thresholds, getX) {
 function stopInteraction(state, thresholds) {
     state.isActive = false;
 
-    applyStyles(mainCard, inactiveStyles);
+    setTimeout(() => {
+        applyStyles(mainCard, inactiveStyles);
+    }, 200);
+
     if (animationId) cancelAnimationFrame(animationId);
 
     const deltaTime = Date.now() - state.startTime;
@@ -61,12 +64,10 @@ function stopInteraction(state, thresholds) {
 
     if (Math.abs(deltaX) > thresholds.deltaThreshold && speed > thresholds.speedThreshold) {
         const rotation = deltaX > 0 ? thresholds.rotateAngle : -thresholds.rotateAngle;
-
-        applyStyles(mainCard, { ...activeStyles, transform: `translateY(-20px) scale(1.02) rotate(${rotation}deg)`});
-        setTimeout(() => applyStyles(mainCard, inactiveStyles), 200);
+        
+        applyStyles(mainCard, { ...activeStyles, transform: `translateY(-20px) scale(1.02) rotate(${rotation}deg)` });
     }
 }
-
 let animationId = null;
 
 function startMouse(event) {
