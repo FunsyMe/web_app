@@ -18,7 +18,7 @@ function startTouch(event) {
     touchStartX = currentTouchX;
 
     mainCard.style.boxShadow = '0 0 40px 4px #0080ce60';
-    mainCard.style.backgroundColor = '#0080ce60';
+    mainCard.style.backgroundColor = '#0080ce';
     
     function animate() {
         if (!isTouching) return;
