@@ -4,6 +4,9 @@
 
 html, body {
   overflow: hidden;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
   user-select: none;
   height: 100%;
   width: 100%;
@@ -64,3 +67,4 @@ body {
   font-weight: normal;
 
 }
+
