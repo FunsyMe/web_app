@@ -1,177 +1,112 @@
 const mainCard = document.querySelector('.main-card');
 
-let isMouseDown = false;
-let animationId = null;
-let currentMouseX = 0;
-let isTouching = false;
-let currentTouchX = 0;
+const stateMouse = { isActive: false, currentX: 0, startTime: 0, startX: 0 };
+const stateTouch = { isActive: false, currentX: 0, startTime: 0, startX: 0 };
 
-let touchStartTime = 0;
-let touchStartX = 0;
-let mouseStartTime = 0;
-let mouseStartX = 0;
+const thresholdsMouse = { rotateThreshold: 45, rotateAngle: 2, deltaThreshold: 50, speedThreshold: 0.5 };
+const thresholdsTouch = { rotateThreshold: 25, rotateAngle: 4, deltaThreshold: 50, speedThreshold: 0.3 };
 
-function startTouch(event) {
-    isTouching = true;
-    currentTouchX = event.touches[0].clientX;
-    touchStartTime = Date.now();
-    touchStartX = currentTouchX;
+const activeStyles = {
+    transform: 'translateY(-20px) scale(1.02)',
+    boxShadow: '0 0 40px 4px #0080ce60',
+    backgroundColor: '#0080ce'
+};
 
-    mainCard.style.boxShadow = '0 0 40px 4px #0080ce60';
-    mainCard.style.backgroundColor = '#0080ce';
-    
+const inactiveStyles = {
+    transform: 'rotate(0deg)',
+    boxShadow: 'none',
+    backgroundColor: '#0080ce60'
+};
+
+function applyStyles(card, styles) {
+    Object.assign(card.style, styles);
+}
+
+function startInteraction(state, thresholds, getX) {
+    state.isActive = true;
+    state.currentX = getX();
+    state.startTime = Date.now();
+    state.startX = state.currentX;
+
+    applyStyles(mainCard, activeStyles);
+
     function animate() {
-        if (!isTouching) return;
-        
+        if (!state.isActive) return;
+
         const centerX = window.innerWidth / 2;
-        const relativeX = currentTouchX - centerX;
-        
-        if (relativeX < -25) {
-            mainCard.style.transform = 'rotate(-4deg)';
+        const relativeX = state.currentX - centerX;
+        let rotation = 0;
+
+        if (relativeX < -thresholds.rotateThreshold) {
+            rotation = -thresholds.rotateAngle;
+        } else if (relativeX > thresholds.rotateThreshold) {
+            rotation = thresholds.rotateAngle;
         }
-        else if (relativeX > 25) {
-            mainCard.style.transform = 'rotate(4deg)';
-        }
-        else {
-            mainCard.style.transform = 'rotate(0deg)';
-        }
-        
+
+        mainCard.style.transform = `translateY(-20px) scale(1.02) rotate(${rotation}deg)`;
         animationId = requestAnimationFrame(animate);
     }
-    
     animate();
 }
+
+function stopInteraction(state, thresholds) {
+    state.isActive = false;
+
+    applyStyles(mainCard, inactiveStyles);
+    if (animationId) cancelAnimationFrame(animationId);
+
+    const deltaTime = Date.now() - state.startTime;
+    const deltaX = state.currentX - state.startX;
+    const speed = Math.abs(deltaX) / deltaTime;
+
+    if (Math.abs(deltaX) > thresholds.deltaThreshold && speed > thresholds.speedThreshold) {
+        const rotation = deltaX > 0 ? thresholds.rotateAngle : -thresholds.rotateAngle;
+
+        applyStyles(mainCard, { ...activeStyles, transform: `translateY(-20px) scale(1.02) rotate(${rotation}deg)`});
+        setTimeout(() => applyStyles(mainCard, inactiveStyles), 200);
+    }
+}
+
+let animationId = null;
 
 function startMouse(event) {
-    isMouseDown = true;
-    currentMouseX = event.clientX;
-    mouseStartTime = Date.now();
-    mouseStartX = currentMouseX;
-
-    mainCard.style.boxShadow = '0 0 40px 4px #0080ce60';
-    mainCard.style.backgroundColor = '#0080ce';
-    
-    function animate() {
-        if (!isMouseDown) return;
-        
-        const centerX = window.innerWidth / 2;
-        const relativeX = currentMouseX - centerX
-        
-        if (relativeX < -45) {
-            mainCard.style.transform = 'rotate(-2deg)';
-        }
-        else if (relativeX > 45) {
-            mainCard.style.transform = 'rotate(2deg)';
-        }
-
-        animationId = requestAnimationFrame(animate);
-    }
-    
-    animate();
+    startInteraction(stateMouse, thresholdsMouse, () => event.clientX);
 }
 
-function moveTouch(event) {
-    if (isTouching) {
-        currentTouchX = event.touches[0].clientX;
-    }
+function startTouch(event) {
+    startInteraction(stateTouch, thresholdsTouch, () => event.touches[0].clientX);
 }
 
 function moveMouse(event) {
-    if (isMouseDown) {
-        currentMouseX = event.clientX;
-    }
+    if (stateMouse.isActive) stateMouse.currentX = event.clientX;
 }
 
-function stopTouch() {
-    isTouching = false;
-
-    mainCard.style.transform = 'rotate(0deg)';
-    mainCard.style.boxShadow = 'none';
-    mainCard.style.backgroundColor = '#0080ce60';
-
-    if (animationId) {
-        cancelAnimationFrame(animationId);
-    }
-
-    const deltaTime = Date.now() - touchStartTime;
-    const deltaX = currentTouchX - touchStartX;
-    const speed = Math.abs(deltaX) / deltaTime;
-
-    if (Math.abs(deltaX) > 50 && speed > 0.3) {
-        if (deltaX > 0) {
-            mainCard.style.transform = 'rotate(2deg)';
-        } else {
-            mainCard.style.transform = 'rotate(-2deg)';
-        }
-        mainCard.style.boxShadow = '0 0 40px 4px #0080ce60';
-        mainCard.style.backgroundColor = '#0080ce';
-
-        setTimeout(() => {
-            mainCard.style.transform = 'rotate(0deg)';
-            mainCard.style.boxShadow = 'none';
-            mainCard.style.backgroundColor = '#0080ce60';
-        }, 200);
-    }
+function moveTouch(event) {
+    if (stateTouch.isActive) stateTouch.currentX = event.touches[0].clientX;
 }
 
 function stopMouse() {
-    isMouseDown = false;
-
-    mainCard.style.transform = 'rotate(0deg)';
-    mainCard.style.boxShadow = 'none';
-    mainCard.style.backgroundColor = '#0080ce60';
-
-    if (animationId) {
-        cancelAnimationFrame(animationId);
-    }
-
-    const deltaTime = Date.now() - mouseStartTime;
-    const deltaX = currentMouseX - mouseStartX;
-    const speed = Math.abs(deltaX) / deltaTime;
-
-    if (Math.abs(deltaX) > 50 && speed > 0.5) {
-        if (deltaX > 0) {
-            mainCard.style.transform = 'rotate(2deg)';
-        } else {
-            mainCard.style.transform = 'rotate(-2deg)';
-        }
-        mainCard.style.boxShadow = '0 0 40px 4px #0080ce60';
-        mainCard.style.backgroundColor = '#0080ce';
-
-        setTimeout(() => {
-            mainCard.style.transform = 'rotate(0deg)';
-            mainCard.style.boxShadow = 'none';
-            mainCard.style.backgroundColor = '#0080ce60';
-        }, 200);
-    }
+    stopInteraction(stateMouse, thresholdsMouse);
 }
 
-document.addEventListener('wheel', (e) => {
-  e.preventDefault();
-}, { passive: false });
+function stopTouch() {
+    stopInteraction(stateTouch, thresholdsTouch);
+}
 
-document.addEventListener('touchmove', (e) => {
-  e.preventDefault();
-}, { passive: false });
-
+document.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
 document.addEventListener('keydown', (e) => {
-  if (
-    e.key === 'ArrowDown' || 
-    e.key === 'ArrowUp' || 
-    e.key === ' ' || 
-    e.key === 'PageDown' || 
-    e.key === 'PageUp'
-  ) {
-    e.preventDefault();
-  }
+    if (['ArrowDown', 'ArrowUp', ' ', 'PageDown', 'PageUp'].includes(e.key)) {
+        e.preventDefault();
+    }
 });
-
-mainCard.addEventListener('touchstart', startTouch);
-mainCard.addEventListener('touchmove', moveTouch);
-mainCard.addEventListener('touchend', stopTouch);
-mainCard.addEventListener('touchcancel', stopTouch);
 
 mainCard.addEventListener('mousedown', startMouse);
 mainCard.addEventListener('mousemove', moveMouse);
 mainCard.addEventListener('mouseup', stopMouse);
 mainCard.addEventListener('mouseleave', stopMouse);
+
+mainCard.addEventListener('touchstart', startTouch);
+mainCard.addEventListener('touchmove', moveTouch);
+mainCard.addEventListener('touchend', stopTouch);
+mainCard.addEventListener('touchcancel', stopTouch);
