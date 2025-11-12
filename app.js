@@ -92,6 +92,13 @@ function stopMouse() {
     }
 }
 
+if (window.Telegram && window.Telegram.WebApp) {
+  const webApp = window.Telegram.WebApp;
+  
+  webApp.expand();
+  webApp.BackButton.hide();
+}
+
 document.addEventListener('wheel', (e) => {
   e.preventDefault();
 }, { passive: false });
