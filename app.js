@@ -92,6 +92,29 @@ function stopMouse() {
     }
 }
 
+document.addEventListener('wheel', (e) => {
+  e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('keydown', (e) => {
+  if (
+    e.key === 'ArrowDown' || 
+    e.key === 'ArrowUp' || 
+    e.key === ' ' || 
+    e.key === 'PageDown' || 
+    e.key === 'PageUp'
+  ) {
+    e.preventDefault();
+  }
+});
+
+document.body.style.overflow = 'hidden';
+document.documentElement.style.overflow = 'hidden';
+
 mainCard.addEventListener('touchstart', startTouch);
 mainCard.addEventListener('touchmove', moveTouch);
 mainCard.addEventListener('touchend', stopTouch);
