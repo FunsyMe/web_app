@@ -89,8 +89,6 @@ function stopTouch() {
     mainCard.style.boxShadow = 'none';
     mainCard.style.backgroundColor = '#0080ce60';
 
-//     background-color: #0080ce60;
-
     if (animationId) {
         cancelAnimationFrame(animationId);
     }
