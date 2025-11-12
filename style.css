@@ -4,6 +4,7 @@
 
 html, body {
   overflow: hidden;
+  user-select: none;
   height: 100%;
   width: 100%;
 }
@@ -34,7 +35,6 @@ body {
   align-items: center;
   justify-content: center;
   transform-origin: 50% 100%;
-  user-select: none;
 }
 
 .main-card:hover {
@@ -62,4 +62,5 @@ body {
 .category h4 {
   font-size: clamp(8pt, 5.6vw, 16pt);
   font-weight: normal;
+
 }
