@@ -3,6 +3,8 @@ const mainCard = document.querySelector('.main-card');
 let isMouseDown = false;
 let animationId = null;
 let currentMouseX = 0;
+let isTouching = false;
+let currentTouchX = 0;
 
 function startTouch(event) {
     isTouching = true;
