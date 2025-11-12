@@ -60,10 +60,10 @@ function startMouse(event) {
         const centerX = window.innerWidth / 2;
         const relativeX = currentMouseX - centerX;
         
-        if (relativeX < -25) {
+        if (relativeX < -45) {
             mainCard.style.transform = 'rotate(-4deg)';
         }
-        else if (relativeX > 25) {
+        else if (relativeX > 45) {
             mainCard.style.transform = 'rotate(4deg)';
         }
         else {
