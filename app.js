@@ -1,74 +1,161 @@
-const mainCard = document.querySelector('.main-card');
+let mainCard = document.querySelector('.main-card');
+let nextCard = document.querySelector('.next-card');
 
 const stateMouse = { isActive: false, currentX: 0, startTime: 0, startX: 0 };
 const stateTouch = { isActive: false, currentX: 0, startTime: 0, startX: 0 };
 
-const thresholdsMouse = { rotateThreshold: 45, rotateAngle: 2, deltaThreshold: 50, speedThreshold: 0.5 };
-const thresholdsTouch = { rotateThreshold: 25, rotateAngle: 4, deltaThreshold: 50, speedThreshold: 0.3 };
+const thresholdsMouse = { rotateThreshold: 25, rotateAngle: 4, deltaThreshold: 50 };
+const thresholdsTouch = { rotateThreshold: 25, rotateAngle: 4, deltaThreshold: 50 };
 
-const activeStyles = {
-    transform: 'translateY(-20px) scale(1.02)',
-    boxShadow: '0 0 40px 4px #0080ce60',
-    backgroundColor: '#0080ce'
+const backgroundColors = {
+    0: ['#ce0000', '#5d0f0f'],
+    1: ['#ce7c00', '#5d3e0f'],
+    2: ['#048000', '#0f5d15'],
+    3: ['#0080ce', '#0f3f5d']
 };
 
-const inactiveStyles = {
-    transform: 'rotate(0deg)',
-    boxShadow: 'none',
-    backgroundColor: '#0080ce60'
-};
+let direction = 0;
+let animationId = null;
 
-function applyStyles(card, styles) {
-    Object.assign(card.style, styles);
+let mainBackgroundColor = '';
+let mainBorderColor = '';
+
+let nextBackgroundColor = '';
+let nextBorderColor = '';
+
+function applyActiveStyles(card) {
+    card.style.transform = 'translateY(-20px) scale(1.01)';
+    card.style.backgroundColor = mainBackgroundColor;
+    card.style.boxShadow = `0 0 40px 4px ${mainBorderColor}`;
 }
+
+function applyInactiveStyles(card) {
+    card.style.transform = 'rotate(0deg)';
+    card.style.boxShadow = 'none';
+    card.style.backgroundColor = mainBorderColor;
+}
+
+
+function setMainColor(card) {
+    let color = Math.floor(Math.random() * 4);
+
+    mainBackgroundColor = backgroundColors[color][0];
+    mainBorderColor = backgroundColors[color][1];
+
+    card.style.backgroundColor = backgroundColors[color][1];
+    card.style.borderColor = backgroundColors[color][0];
+}
+
+function setNextColor(card) {
+    let color = Math.floor(Math.random() * 4);
+
+    nextBackgroundColor = backgroundColors[color][0];
+    nextBorderColor = backgroundColors[color][1];
+
+    card.style.backgroundColor = backgroundColors[color][1];
+    card.style.borderColor = backgroundColors[color][0];
+}
+
+function addEventListeners(card) {
+    card.addEventListener('mousedown', startMouse);
+    card.addEventListener('mousemove', moveMouse);
+    card.addEventListener('mouseup', stopMouse);
+    card.addEventListener('mouseleave', stopMouse);
+    
+    card.addEventListener('touchstart', startTouch);
+    card.addEventListener('touchmove', moveTouch);
+    card.addEventListener('touchend', stopTouch);
+    card.addEventListener('touchcancel', stopTouch);
+}
+
+function moveNextCard() {
+    setTimeout(() => {
+        nextCard.style.opacity = 100;
+        nextCard.style.transform = 'rotate(0deg) translateY(10px)';
+    }, 60);
+}
+
+function swipeCard(direction, thresholds) {
+    const screenWidth = window.innerWidth;
+    const translateX = direction == 4 ? screenWidth : -screenWidth;
+    
+    mainCard.style.transform = `translateX(${translateX}px) rotate(${direction == 4 ? thresholds.rotateAngle : -thresholds.rotateAngle}deg)`;
+    nextCard.style.transform = 'rotate(0deg)';
+
+    setTimeout(() => {
+        stateMouse.isActive = false
+        stateTouch.isActive = false
+
+        if (animationId) cancelAnimationFrame(animationId);
+
+        const newCard = document.createElement('div');
+        mainCard.remove();
+
+        mainBackgroundColor = nextBackgroundColor;
+        mainBorderColor = nextBorderColor;
+
+        newCard.className = 'next-card';
+        nextCard.className = 'main-card';
+
+        document.body.appendChild(newCard);
+        mainCard = document.querySelector('.main-card');
+        nextCard = document.querySelector('.next-card');
+
+        nextCard.style.opacity = 0;
+        
+        addEventListeners(mainCard);
+        setNextColor(nextCard);
+        moveNextCard()
+
+    }, 100);
+}
+
 
 function startInteraction(state, thresholds, getX) {
     state.isActive = true;
     state.currentX = getX();
     state.startTime = Date.now();
     state.startX = state.currentX;
+    state.isActive = true;
+    direction = 0;
 
-    applyStyles(mainCard, activeStyles);
+    applyActiveStyles(mainCard);
 
     function animate() {
         if (!state.isActive) return;
 
         const centerX = window.innerWidth / 2;
         const relativeX = state.currentX - centerX;
-        let rotation = 0;
 
         if (relativeX < -thresholds.rotateThreshold) {
-            rotation = -thresholds.rotateAngle;
+            direction = -thresholds.rotateAngle;
         } else if (relativeX > thresholds.rotateThreshold) {
-            rotation = thresholds.rotateAngle;
+            direction = thresholds.rotateAngle;
+        }
+        else {
+            direction = 0;
         }
 
-        mainCard.style.transform = `translateY(-20px) scale(1.02) rotate(${rotation}deg)`;
+        mainCard.style.transform = `translateY(-20px) scale(1.01) rotate(${direction}deg)`;
         animationId = requestAnimationFrame(animate);
     }
     animate();
 }
 
-function stopInteraction(state, thresholds) {
+function stopInteraction(state, thresholds, isLeave = false) {
     state.isActive = false;
-
-    setTimeout(() => {
-        applyStyles(mainCard, inactiveStyles);
-    }, 200);
-
     if (animationId) cancelAnimationFrame(animationId);
 
-    const deltaTime = Date.now() - state.startTime;
-    const deltaX = state.currentX - state.startX;
-    const speed = Math.abs(deltaX) / deltaTime;
-
-    if (Math.abs(deltaX) > thresholds.deltaThreshold && speed > thresholds.speedThreshold) {
-        const rotation = deltaX > 0 ? thresholds.rotateAngle : -thresholds.rotateAngle;
-        
-        applyStyles(mainCard, { ...activeStyles, transform: `translateY(-20px) scale(1.02) rotate(${rotation}deg)` });
+    if (direction == 0 || isLeave) {
+        setTimeout(() => {
+            applyInactiveStyles(mainCard);
+        }, 200);
+    } else {
+        setTimeout(() => {
+            swipeCard(direction, thresholds);
+        }, 50);
     }
 }
-let animationId = null;
 
 function startMouse(event) {
     startInteraction(stateMouse, thresholdsMouse, () => event.clientX);
@@ -86,12 +173,12 @@ function moveTouch(event) {
     if (stateTouch.isActive) stateTouch.currentX = event.touches[0].clientX;
 }
 
-function stopMouse() {
-    stopInteraction(stateMouse, thresholdsMouse);
+function stopMouse(event) {
+    stopInteraction(stateMouse, thresholdsMouse, event.type === 'mouseleave');
 }
 
-function stopTouch() {
-    stopInteraction(stateTouch, thresholdsTouch);
+function stopTouch(event) {
+    stopInteraction(stateTouch, thresholdsTouch, event.type === 'touchcancel' || event.type === 'touchend' ? false : true);
 }
 
 document.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
@@ -101,6 +188,10 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
     }
 });
+
+setMainColor(mainCard);
+setNextColor(nextCard);
+moveNextCard();
 
 mainCard.addEventListener('mousedown', startMouse);
 mainCard.addEventListener('mousemove', moveMouse);
