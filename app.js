@@ -16,6 +16,7 @@ const backgroundColors = {
 
 let direction = 0;
 let animationId = null;
+let isSwiping = false;
 
 let mainBackgroundColor = '';
 let mainBorderColor = '';
@@ -76,6 +77,9 @@ function moveNextCard() {
 }
 
 function swipeCard(direction, thresholds) {
+    if (isSwiping) return;
+    isSwiping = true;
+
     const screenWidth = window.innerWidth;
     const translateX = direction == 4 ? screenWidth : -screenWidth;
     
@@ -105,8 +109,9 @@ function swipeCard(direction, thresholds) {
         
         addEventListeners(mainCard);
         setNextColor(nextCard);
-        moveNextCard()
+        moveNextCard();
 
+        isSwiping = false; 
     }, 100);
 }
 
