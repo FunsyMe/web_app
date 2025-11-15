@@ -70,7 +70,7 @@ function addEventListeners(card) {
 
 function moveNextCard() {
     setTimeout(() => {
-        nextCard.style.opacity = 100;
+        nextCard.style.opacity = '100';
         nextCard.style.transform = 'rotate(0deg) translateY(10px)';
     }, 60);
 }
@@ -101,7 +101,7 @@ function swipeCard(direction, thresholds) {
         mainCard = document.querySelector('.main-card');
         nextCard = document.querySelector('.next-card');
 
-        nextCard.style.opacity = 0;
+        nextCard.style.opacity = '0';
         
         addEventListeners(mainCard);
         setNextColor(nextCard);
