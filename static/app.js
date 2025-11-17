@@ -1,6 +1,9 @@
 let mainCard = document.querySelector('.main-card');
 let nextCard = document.querySelector('.next-card');
 
+let confirmImage = document.querySelector('.confirm-image');
+let decline = document.querySelector('.decline-image');
+
 const stateMouse = { isActive: false, currentX: 0, startTime: 0, startX: 0 };
 const stateTouch = { isActive: false, currentX: 0, startTime: 0, startX: 0 };
 
@@ -34,8 +37,10 @@ function applyInactiveStyles(card) {
     card.style.transform = 'rotate(0deg)';
     card.style.boxShadow = 'none';
     card.style.backgroundColor = mainBorderColor;
-}
 
+    confirmImage.style.opacity = '0';
+    decline.style.opacity = '0';
+}
 
 function setMainColor(card) {
     let color = Math.floor(Math.random() * 4);
@@ -71,19 +76,40 @@ function addEventListeners(card) {
 
 function moveNextCard() {
     setTimeout(() => {
-        nextCard.style.opacity = '100';
+        nextCard.style.opacity = '1';
         nextCard.style.transform = 'rotate(0deg) translateY(10px)';
     }, 60);
 }
 
-function swipeCard(direction, thresholds) {
+function showConfirmImage() {
+    setTimeout(() => {
+        confirmImage.style.opacity = '1';
+        decline.style.opacity = '0';
+    }, 20);
+}
+
+function showDeclineImage() {
+    setTimeout(() => {
+        confirmImage.style.opacity = '0';
+        decline.style.opacity = '1';
+    }, 20);
+}
+
+function hideAllImage() {
+    setTimeout(() => {
+        confirmImage.style.opacity = '0';
+        decline.style.opacity = '0';
+    }, 20);
+}
+
+function swipeCard(direction) {
     if (isSwiping) return;
     isSwiping = true;
 
     const screenWidth = window.innerWidth;
     const translateX = direction == 4 ? screenWidth : -screenWidth;
     
-    mainCard.style.transform = `translateX(${translateX}px) rotate(${direction == 4 ? thresholds.rotateAngle : -thresholds.rotateAngle}deg)`;
+    mainCard.style.transform = `translateX(${translateX}px) rotate(${direction}deg)`;
     nextCard.style.transform = 'rotate(0deg)';
 
     setTimeout(() => {
@@ -98,14 +124,19 @@ function swipeCard(direction, thresholds) {
         mainBackgroundColor = nextBackgroundColor;
         mainBorderColor = nextBorderColor;
 
+        nextCard.innerHTML = '<div class="confirm-image"><img src="./static/images/confirm.svg" alt=""></div><div class="decline-image"><img src="./static/images/decline.svg" alt=""></div>';
+        newCard.innerHTML = '<div class="confirm-image"><img src="./static/images/confirm.svg" alt=""></div><div class="decline-image"><img src="./static/images/decline.svg" alt=""></div>';
+        
         newCard.className = 'next-card';
         nextCard.className = 'main-card';
 
         document.body.appendChild(newCard);
+        newCard.style.opacity = '0';
+
         mainCard = document.querySelector('.main-card');
         nextCard = document.querySelector('.next-card');
-
-        nextCard.style.opacity = '0';
+        confirmImage = document.querySelector('.confirm-image');
+        decline = document.querySelector('.decline-image');
         
         addEventListeners(mainCard);
         setNextColor(nextCard);
@@ -122,9 +153,8 @@ function startInteraction(state, thresholds, getX) {
     state.startTime = Date.now();
     state.startX = state.currentX;
     state.isActive = true;
+    
     direction = 0;
-
-    applyActiveStyles(mainCard);
 
     function animate() {
         if (!state.isActive) return;
@@ -134,16 +164,21 @@ function startInteraction(state, thresholds, getX) {
 
         if (relativeX < -thresholds.rotateThreshold) {
             direction = -thresholds.rotateAngle;
+            showDeclineImage();
         } else if (relativeX > thresholds.rotateThreshold) {
             direction = thresholds.rotateAngle;
+            showConfirmImage();
         }
         else {
             direction = 0;
+            hideAllImage();
         }
 
         mainCard.style.transform = `translateY(-20px) scale(1.01) rotate(${direction}deg)`;
         animationId = requestAnimationFrame(animate);
     }
+
+    applyActiveStyles(mainCard);
     animate();
 }
 
@@ -157,7 +192,7 @@ function stopInteraction(state, thresholds, isLeave = false) {
         }, 200);
     } else {
         setTimeout(() => {
-            swipeCard(direction, thresholds);
+            swipeCard(direction);
         }, 50);
     }
 }
@@ -186,6 +221,10 @@ function stopTouch(event) {
     stopInteraction(stateTouch, thresholdsTouch, event.type === 'touchcancel' || event.type === 'touchend' ? false : true);
 }
 
+setMainColor(mainCard);
+setNextColor(nextCard);
+moveNextCard();
+
 document.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
 document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
 document.addEventListener('keydown', (e) => {
@@ -193,10 +232,6 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
     }
 });
-
-setMainColor(mainCard);
-setNextColor(nextCard);
-moveNextCard();
 
 mainCard.addEventListener('mousedown', startMouse);
 mainCard.addEventListener('mousemove', moveMouse);

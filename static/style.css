@@ -1,0 +1,129 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow: hidden;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: #181818;
+  color: #ffffff;
+  min-height: 100vh;
+  font-family: 'JetBrains Mono', monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+}
+
+.main-card {
+  width: 80%;
+  max-width: 600px;
+  transform: rotate(0deg);
+  position: relative;
+  aspect-ratio: 0.65 / 0.85;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  background-color: #0f3f5d;
+  border: solid 2px;
+  text-shadow: 0 0 6px #ffffff60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: 50% 100%;
+  z-index: 10;
+}
+
+.confirm-image {
+  position: absolute;
+  transition: all 0.3s ease;
+  top: clamp(5px, 1vw, 40px);
+  right: clamp(5px, 1vw, 40px);
+  opacity: 0;
+}
+
+.decline-image {
+  position: absolute;
+  transition: all 0.3s ease;
+  top: clamp(5px, 1vw, 40px);
+  left: clamp(5px, 1vw, 40px);
+  opacity: 0;
+}
+
+.confirm-text {
+  position: absolute;
+  transition: all 0.3s ease;
+  top: clamp(65px, 1vw, 20px);
+  right: clamp(5px, 1vw, 20px);
+}
+
+.decline-text {
+  position: absolute;
+  transition: all 0.3s ease;
+  top: clamp(65px, 1vw, 20px);
+  left: clamp(5px, 1vw, 20px);
+}
+
+.decline-image img {
+  width: clamp(20px, 10vw, 80px);
+}
+
+.confirm-image img {
+  width: clamp(20px, 10vw, 80px);
+}
+
+.next-card {
+  width: 80%;
+  max-width: 600px;
+  transform: rotate(0deg);
+  position: absolute;
+  aspect-ratio: 0.65 / 0.85;
+  border-radius: 20px;
+  transition: all 0.3s ease-in-out;
+  background-color: #5d0f0f;
+  border: solid 2px #ce0000;
+  text-shadow: 0 0 6px #ffffff60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: 50% 100%;
+  z-index: 1;
+}
+
+.habit h2 {
+  font-size: clamp(22px, 10vw, 72px);
+  font-weight: bold;
+  line-height: 1.1;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.category {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+}
+
+.category h4 {
+  font-size: clamp(8pt, 5.6vw, 16pt);
+  font-weight: normal;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
