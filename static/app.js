@@ -3,7 +3,6 @@ let nextCard = document.querySelector('.next-card');
 
 let confirmImage = document.querySelector('.confirm-image');
 let decline = document.querySelector('.decline-image');
-let tg = window.Telegram.WebApp;
 
 const stateMouse = { isActive: false, currentX: 0, startTime: 0, startX: 0 };
 const stateTouch = { isActive: false, currentX: 0, startTime: 0, startX: 0 };
@@ -237,10 +236,16 @@ document.addEventListener('keydown', (e) => {
 const userAgent = navigator.userAgent.toLowerCase();
 const isMobile = /mobile|iphone|ipad|ipod|android|blackberry|mini|windows\\sce|palm/i.test(userAgent);
 
+try {
+    let tg = window.Telegram.WebApp;
+
+    tg.requestFullscreen();
+} catch (error) {
+    console.log('An error occured: ', error)
+}
 if (!isMobile) {
     window.location.href = './pc_index.html';
 }
-tg.requestFullscreen();
 
 mainCard.addEventListener('mousedown', startMouse);
 mainCard.addEventListener('mousemove', moveMouse);
