@@ -127,3 +127,21 @@ body {
   -moz-user-select: none;
   user-select: none;
 }
+
+.control-panel {
+  background-color: #1e1e1e;
+  border-radius: 20px;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 30px;
+  width: 80%;
+  height: 60px;
+  bottom: 40px;
+  z-index: 20;
+}
+
+.control-panel img {
+  width: 46px;
+}
