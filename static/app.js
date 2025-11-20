@@ -239,6 +239,8 @@ const isMobile = /mobile|iphone|ipad|ipod|android|blackberry|mini|windows\\sce|p
 if (window.Telegram && window.Telegram.WebApp) {
     const webApp = window.Telegram.WebApp;
     
+    webApp.ready();
+    webApp.requestFullscreen();
     webApp.expand();           
 } else {
     console.log('Это не Telegram Web App'); 
