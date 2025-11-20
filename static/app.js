@@ -236,12 +236,15 @@ document.addEventListener('keydown', (e) => {
 const userAgent = navigator.userAgent.toLowerCase();
 const isMobile = /mobile|iphone|ipad|ipod|android|blackberry|mini|windows\\sce|palm/i.test(userAgent);
 
-let tg = window.Telegram.WebApp;
+try {
+    let tg = window.Telegram.WebApp;
 
-tg.ready();       
-tg.expand();
-
-tg.requestFullscreen();
+    tg.ready();       
+    tg.expand();
+    tg.requestFullscreen();
+} catch (error) {
+    console.log('An error occured: ', error)
+}
 
 if (!isMobile) {
     window.location.href = './pc_index.html';
