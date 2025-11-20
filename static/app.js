@@ -236,14 +236,12 @@ document.addEventListener('keydown', (e) => {
 const userAgent = navigator.userAgent.toLowerCase();
 const isMobile = /mobile|iphone|ipad|ipod|android|blackberry|mini|windows\\sce|palm/i.test(userAgent);
 
-try {
-    let tg = window.Telegram.WebApp;
-
-    tg.ready();       
-    tg.expand();
-    tg.requestFullscreen();
-} catch (error) {
-    console.log('An error occured: ', error)
+if (window.Telegram && window.Telegram.WebApp) {
+    const webApp = window.Telegram.WebApp;
+    
+    webApp.expand();           
+} else {
+    console.log('Это не Telegram Web App'); 
 }
 
 if (!isMobile) {
