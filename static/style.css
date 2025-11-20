@@ -145,9 +145,5 @@ body {
 }
 
 .control-panel img {
-<<<<<<< HEAD
   width: clamp(28px, 14vw, 46px);
-=======
-  width: 46px;
->>>>>>> 86b2f1185f56fcde0790cb59f266c9b0afdf50eb
 }
