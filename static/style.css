@@ -135,13 +135,13 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 30px;
+  gap: clamp(1px, 4vw, 80px);
   width: 80%;
-  height: 60px;
-  bottom: 40px;
+  height: clamp(38px, 18vw, 56px);
+  top: calc(50vh + (min(80vw, 600px) * (0.85 / 0.65) / 2) + 60px);
   z-index: 20;
 }
 
 .control-panel img {
-  width: 46px;
+  width: clamp(28px, 14vw, 46px);
 }
