@@ -140,7 +140,7 @@ body {
   gap: clamp(1px, 4vw, 80px);
   width: 80%;
   height: clamp(38px, 18vw, 56px);
-  bottom: 40px;
+  bottom: 20px;
   z-index: 20;
 }
 
