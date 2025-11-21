@@ -132,7 +132,7 @@ body {
 
 .control-panel {
   background-color: #1e1e1e;
-  border-radius: 20px;
+  border-radius: clamp(8px, 18vw, 20px);
   position: absolute;
   display: flex;
   flex-direction: row;
