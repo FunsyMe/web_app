@@ -36,10 +36,7 @@ body {
   text-shadow: 0 0 8px #ffffff60;
 }
 
-.qr-code {
-  margin: 20px;
-}
-
 .qr-code img {
+  margin: 20px;
   width: 60%;
 }
