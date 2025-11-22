@@ -32,6 +32,14 @@ body {
 }
 
 .warn-text h1 {
-    font-size: clamp(1pt, 6vw, 42pt);
-    text-shadow: 0 0 8px #ffffff60;
+  font-size: clamp(1pt, 6vw, 42pt);
+  text-shadow: 0 0 8px #ffffff60;
+}
+
+.qr-code {
+  margin: 20px;
+}
+
+.qr-code img {
+  width: 60%;
 }

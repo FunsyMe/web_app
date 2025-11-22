@@ -4,10 +4,7 @@ let nextCard = document.querySelector('.next-card');
 let confirmImage = document.querySelector('.confirm-image');
 let decline = document.querySelector('.decline-image');
 
-const stateMouse = { isActive: false, currentX: 0, startTime: 0, startX: 0 };
 const stateTouch = { isActive: false, currentX: 0, startTime: 0, startX: 0 };
-
-const thresholdsMouse = { rotateThreshold: 25, rotateAngle: 4, deltaThreshold: 50 };
 const thresholdsTouch = { rotateThreshold: 25, rotateAngle: 4, deltaThreshold: 50 };
 
 const backgroundColors = {
@@ -63,11 +60,6 @@ function setNextColor(card) {
 }
 
 function addEventListeners(card) {
-    card.addEventListener('mousedown', startMouse);
-    card.addEventListener('mousemove', moveMouse);
-    card.addEventListener('mouseup', stopMouse);
-    card.addEventListener('mouseleave', stopMouse);
-    
     card.addEventListener('touchstart', startTouch);
     card.addEventListener('touchmove', moveTouch);
     card.addEventListener('touchend', stopTouch);
@@ -113,7 +105,6 @@ function swipeCard(direction) {
     nextCard.style.transform = 'rotate(0deg)';
 
     setTimeout(() => {
-        stateMouse.isActive = false
         stateTouch.isActive = false
 
         if (animationId) cancelAnimationFrame(animationId);
@@ -145,7 +136,6 @@ function swipeCard(direction) {
         isSwiping = false; 
     }, 100);
 }
-
 
 function startInteraction(state, thresholds, getX) {
     state.isActive = true;
@@ -182,7 +172,7 @@ function startInteraction(state, thresholds, getX) {
     animate();
 }
 
-function stopInteraction(state, thresholds, isLeave = false) {
+function stopInteraction(state, isLeave = false) {
     state.isActive = false;
     if (animationId) cancelAnimationFrame(animationId);
 
@@ -197,28 +187,16 @@ function stopInteraction(state, thresholds, isLeave = false) {
     }
 }
 
-function startMouse(event) {
-    startInteraction(stateMouse, thresholdsMouse, () => event.clientX);
-}
-
 function startTouch(event) {
     startInteraction(stateTouch, thresholdsTouch, () => event.touches[0].clientX);
-}
-
-function moveMouse(event) {
-    if (stateMouse.isActive) stateMouse.currentX = event.clientX;
 }
 
 function moveTouch(event) {
     if (stateTouch.isActive) stateTouch.currentX = event.touches[0].clientX;
 }
 
-function stopMouse(event) {
-    stopInteraction(stateMouse, thresholdsMouse, event.type === 'mouseleave');
-}
-
 function stopTouch(event) {
-    stopInteraction(stateTouch, thresholdsTouch, event.type === 'touchcancel' || event.type === 'touchend' ? false : true);
+    stopInteraction(stateTouch, event.type === 'touchcancel' || event.type === 'touchend' ? false : true);
 }
 
 setMainColor(mainCard);
@@ -237,7 +215,7 @@ try {
     const webApp = window.Telegram.WebApp;
     
     webApp.expand();
-
+    webApp.requestFullscreen();
 } catch (error) {
     console.log('An orrer occured: ', error)
 }
@@ -248,11 +226,6 @@ const isMobile = /mobile|iphone|ipad|ipod|android|blackberry|mini|windows\\sce|p
 if (!isMobile) {
     window.location.href = './pc_index.html';
 }
-
-mainCard.addEventListener('mousedown', startMouse);
-mainCard.addEventListener('mousemove', moveMouse);
-mainCard.addEventListener('mouseup', stopMouse);
-mainCard.addEventListener('mouseleave', stopMouse);
 
 mainCard.addEventListener('touchstart', startTouch);
 mainCard.addEventListener('touchmove', moveTouch);
