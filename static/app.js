@@ -56,7 +56,7 @@ function applyInactiveStyles(card) {
 }
 
 function setMainColor(card) {
-    let color = Math.floor(Math.random() * 5);
+    let color = Math.floor(Math.random() * 6);
 
     mainBackgroundColor = backgroundColors[color][0];
     mainBorderColor = backgroundColors[color][1];
@@ -66,7 +66,7 @@ function setMainColor(card) {
 }
 
 function setNextColor(card) {
-    let color = Math.floor(Math.random() * 5);
+    let color = Math.floor(Math.random() * 6);
 
     nextBackgroundColor = backgroundColors[color][0];
     nextBorderColor = backgroundColors[color][1];
