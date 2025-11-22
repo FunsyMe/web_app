@@ -1,6 +1,6 @@
 try {
     const webApp = window.Telegram.WebApp;
-    const isMobile = /ios|android/i.test(webApp.platform.toLowerCase());
+    const isMobile = /ios|android/i.test(webApp.platform);
 
     if (!isMobile) {
         window.location.href = './pc_index.html';
