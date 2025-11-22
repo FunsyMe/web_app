@@ -233,12 +233,13 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-if (window.Telegram && window.Telegram.WebApp) {
+try {
     const webApp = window.Telegram.WebApp;
     
-    webApp.ready();
-    webApp.requestFullscreen();
-    webApp.expand();           
+    webApp.expand();
+
+} catch (error) {
+    console.log('An orrer occured: ', error)
 }
 
 const userAgent = navigator.userAgent.toLowerCase();
