@@ -1,8 +1,15 @@
-const userAgent = navigator.userAgent.toLowerCase();
-const isMobile = /mobile|iphone|ipad|ipod|android|blackberry|mini|windows\\sce|palm/i.test(userAgent);
+try {
+    const webApp = window.Telegram.WebApp;
+    const isMobile = /ios|android/i.test(webApp.platform.toLowerCase());
 
-if (!isMobile) {
-    window.location.href = './pc_index.html';
+    if (isMobile) {
+        window.location.href = './pc_index.html';
+    }
+    
+    webApp.expand();
+    webApp.requestFullscreen();
+} catch (error) {
+    console.log('An orrer occured: ', error)
 }
 
 let mainCard = document.querySelector('.main-card');
@@ -217,15 +224,6 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
     }
 });
-
-try {
-    const webApp = window.Telegram.WebApp;
-    
-    webApp.expand();
-    webApp.requestFullscreen();
-} catch (error) {
-    console.log('An orrer occured: ', error)
-}
 
 mainCard.addEventListener('touchstart', startTouch);
 mainCard.addEventListener('touchmove', moveTouch);
