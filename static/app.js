@@ -25,7 +25,9 @@ const backgroundColors = {
     0: ['#ce0000', '#5d0f0f'],
     1: ['#ce7c00', '#5d3e0f'],
     2: ['#048000', '#0f5d15'],
-    3: ['#0080ce', '#0f3f5d']
+    3: ['#0080ce', '#0f3f5d'],
+    4: ['#d100b5', '#80046f'],
+    5: ['#d4b81e', '#b07904']
 };
 
 let direction = 0;
@@ -54,7 +56,7 @@ function applyInactiveStyles(card) {
 }
 
 function setMainColor(card) {
-    let color = Math.floor(Math.random() * 4);
+    let color = Math.floor(Math.random() * 6);
 
     mainBackgroundColor = backgroundColors[color][0];
     mainBorderColor = backgroundColors[color][1];
@@ -64,7 +66,7 @@ function setMainColor(card) {
 }
 
 function setNextColor(card) {
-    let color = Math.floor(Math.random() * 4);
+    let color = Math.floor(Math.random() * 6);
 
     nextBackgroundColor = backgroundColors[color][0];
     nextBorderColor = backgroundColors[color][1];
