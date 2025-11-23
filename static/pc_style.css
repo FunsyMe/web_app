@@ -39,4 +39,15 @@ body {
 .qr-code img {
   margin: 20px;
   width: 60%;
+  z-index: 1000;
+}
+
+.background-text {
+  position: absolute;
+}
+
+.background-text h1 {
+  font-size: clamp(36pt, 20vw, 200pt);
+  color: #ffffff08;
+  z-index: 1;
 }
