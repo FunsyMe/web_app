@@ -131,15 +131,15 @@ function setSelectBox(index) {
     const newPos = relativeCenterX - (boxRect.width / 2);
 
     unselectBox();
-    btn.style.filter = 'grayscale(1)'
+    btn.style.filter = 'invert(1)'
     selectBox.style.left = `${newPos}px`;
 }
 
 function unselectBox() {
-    btn0.style.filter = 'grayscale(0)';
-    btn1.style.filter = 'grayscale(0)';
-    btn2.style.filter = 'grayscale(0)';
-    btn3.style.filter = 'grayscale(0)';
+    btn0.style.filter = 'invert(0)';
+    btn1.style.filter = 'invert(0)';
+    btn2.style.filter = 'invert(0)';
+    btn3.style.filter = 'invert(0)';
 }
 
 function vibrate(type) {
