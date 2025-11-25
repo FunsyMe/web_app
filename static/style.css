@@ -147,6 +147,7 @@ body {
 
 .control-panel img {
   width: clamp(28px, 14vw, 46px);
+  transition: all 0.3s ease;
   z-index: 30;
 }
 
@@ -162,4 +163,5 @@ body {
   width: clamp(28px, 14vw, 46px);
   height: clamp(28px, 14vw, 46px);
   z-index: 20;
+  transition: all 0.15s ease;
 }

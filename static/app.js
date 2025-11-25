@@ -131,15 +131,15 @@ function setSelectBox(index) {
     const newPos = relativeCenterX - (boxRect.width / 2);
 
     unselectBox();
-    btn.style.filter = 'invert(1)'
+    btn.style.filter = 'grayscale(1)'
     selectBox.style.left = `${newPos}px`;
 }
 
 function unselectBox() {
-    btn0.style.filter = 'invert(0)';
-    btn1.style.filter = 'invert(0)';
-    btn2.style.filter = 'invert(0)';
-    btn3.style.filter = 'invert(0)';
+    btn0.style.filter = 'grayscale(0)';
+    btn1.style.filter = 'grayscale(0)';
+    btn2.style.filter = 'grayscale(0)';
+    btn3.style.filter = 'grayscale(0)';
 }
 
 function vibrate(type) {
@@ -302,19 +302,53 @@ mainCard.addEventListener('touchmove', moveTouch);
 mainCard.addEventListener('touchend', stopTouch);
 mainCard.addEventListener('touchcancel', stopTouch);
 
-btn0.addEventListener('touchend', function() {
+btn0.addEventListener('touchstart', function() {
+    btn0.style.transform = 'scale(0.8)';
+});
+btn1.addEventListener('touchstart', function() {
+    btn1.style.transform = 'scale(0.8)';
+});
+btn2.addEventListener('touchstart', function() {
+    btn2.style.transform = 'scale(0.8)';
+});
+btn3.addEventListener('touchstart', function() {
+    btn3.style.transform = 'scale(0.8)';
+});
+
+btn0.addEventListener('touchend', function(e) {
     setSelectBox(0);
     vibrate('light');
+
+    btn0.style.transform = 'scale(1)';
 });
-btn1.addEventListener('touchend', function() {
+btn1.addEventListener('touchend', function(e) {
     setSelectBox(1);
     vibrate('light');
+
+    btn1.style.transform = 'scale(1)';
 });
-btn2.addEventListener('touchend', function() {
+btn2.addEventListener('touchend', function(e) {
     setSelectBox(2);
     vibrate('light');
+
+    btn2.style.transform = 'scale(1)';
 });
-btn3.addEventListener('touchend', function() {
+btn3.addEventListener('touchend', function(e) {
     setSelectBox(3);
     vibrate('light');
+
+    btn3.style.transform = 'scale(1)';
+});
+
+btn0.addEventListener('touchcancel', function(e) {
+    btn0.style.transform = 'scale(1)';
+});
+btn1.addEventListener('touchcancel', function(e) {
+    btn1.style.transform = 'scale(1)';
+});
+btn2.addEventListener('touchcancel', function(e) {
+    btn2.style.transform = 'scale(1)';
+});
+btn3.addEventListener('touchcancel', function(e) {
+    btn3.style.transform = 'scale(1)';
 });
