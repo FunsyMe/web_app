@@ -14,6 +14,12 @@
 
 let mainCard = document.querySelector('.main-card');
 let nextCard = document.querySelector('.next-card');
+let selectBox = document.querySelector('.select-box');
+
+let btn0 = document.querySelector('.btn-index-0');
+let btn1 = document.querySelector('.btn-index-1');
+let btn2 = document.querySelector('.btn-index-2');
+let btn3 = document.querySelector('.btn-index-3');
 
 let confirmImage = document.querySelector('.confirm-image');
 let decline = document.querySelector('.decline-image');
@@ -111,9 +117,36 @@ function hideAllImage() {
     }, 20);
 }
 
+function setSelectBox(index) {
+    const btn = document.querySelector(`.btn-index-${index}`);
+    const selectBox = document.querySelector('.select-box');
+    const container = document.querySelector('.control-panel');
+
+    const btnRect = btn.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const boxRect = selectBox.getBoundingClientRect();
+
+    const btnCenterX = btnRect.left + btnRect.width / 2;
+    const relativeCenterX = btnCenterX - containerRect.left;
+    const newPos = relativeCenterX - (boxRect.width / 2);
+
+    unselectBox();
+    btn.style.filter = 'invert(1)'
+    selectBox.style.left = `${newPos}px`;
+}
+
+function unselectBox() {
+    btn0.style.filter = 'invert(0)';
+    btn1.style.filter = 'invert(0)';
+    btn2.style.filter = 'invert(0)';
+    btn3.style.filter = 'invert(0)';
+}
+
 function swipeCard(direction) {
     if (isSwiping) return;
+    
     isSwiping = true;
+    navigator.vibrate(200);
 
     const screenWidth = window.innerWidth;
     const translateX = direction == 4 ? screenWidth : -screenWidth;
@@ -218,6 +251,7 @@ function stopTouch(event) {
 
 setMainColor(mainCard);
 setNextColor(nextCard);
+setSelectBox(0);
 moveNextCard();
 
 document.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
@@ -232,3 +266,20 @@ mainCard.addEventListener('touchstart', startTouch);
 mainCard.addEventListener('touchmove', moveTouch);
 mainCard.addEventListener('touchend', stopTouch);
 mainCard.addEventListener('touchcancel', stopTouch);
+
+btn0.addEventListener('touchend', function() {
+    setSelectBox(0);
+    navigator.vibrate(200);
+});
+btn1.addEventListener('touchend', function() {
+    setSelectBox(1);
+    navigator.vibrate(200);
+});
+btn2.addEventListener('touchend', function() {
+    setSelectBox(2);
+    navigator.vibrate(200);
+});
+btn3.addEventListener('touchend', function() {
+    setSelectBox(3);
+    navigator.vibrate(200);
+});

@@ -151,7 +151,7 @@ body {
 }
 
 .select-box {
-  background-color: #ff0000;
+  background-color: #3497d4;
   padding: 0;
   margin: 0;
   position: absolute;
@@ -159,8 +159,7 @@ body {
   top: 50%;
   transform: translateY(-50%);
   border-radius: 100%;
-  width: clamp(32px, 14vw, 50px);
-  height: clamp(32px, 14vw, 50px);
-  left: 8px;
+  width: clamp(28px, 14vw, 46px);
+  height: clamp(28px, 14vw, 46px);
   z-index: 20;
 }
