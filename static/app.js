@@ -1,17 +1,3 @@
-try {
-    const webApp = window.Telegram.WebApp;
-    const isMobile = /ios|android/i.test(webApp.platform);
-
-    if (!isMobile) {
-        window.location.href = './pc_index.html';
-    }
-    
-    webApp.expand();
-    webApp.requestFullscreen();
-} catch (error) {
-    console.log('An orrer occured: ', error)
-}
-
 let mainCard = document.querySelector('.main-card');
 let nextCard = document.querySelector('.next-card');
 
@@ -24,10 +10,11 @@ const thresholdsTouch = { rotateThreshold: 25, rotateAngle: 4, deltaThreshold: 5
 const backgroundColors = {
     0: ['#ce0000', '#5d0f0f'],
     1: ['#ce7c00', '#5d3e0f'],
-    2: ['#048000', '#0f5d15'],
-    3: ['#0080ce', '#0f3f5d'],
-    4: ['#d100b5', '#80046f'],
-    5: ['#d4b81e', '#b07904']
+    2: ['#d4b81e', '#947717'],
+    3: ['#048000', '#0f5d15'],
+    4: ['#0080ce', '#0f3f5d'],
+    5: ['#004068', '#0a2a3d'],
+    6: ['#4b007c', '#2a0046']
 };
 
 let direction = 0;
@@ -56,7 +43,7 @@ function applyInactiveStyles(card) {
 }
 
 function setMainColor(card) {
-    let color = Math.floor(Math.random() * 6);
+    let color = Math.floor(Math.random() * 7);
 
     mainBackgroundColor = backgroundColors[color][0];
     mainBorderColor = backgroundColors[color][1];
@@ -66,7 +53,7 @@ function setMainColor(card) {
 }
 
 function setNextColor(card) {
-    let color = Math.floor(Math.random() * 6);
+    let color = Math.floor(Math.random() * 7);
 
     nextBackgroundColor = backgroundColors[color][0];
     nextBorderColor = backgroundColors[color][1];
