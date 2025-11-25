@@ -142,11 +142,17 @@ function unselectBox() {
     btn3.style.filter = 'invert(0)';
 }
 
+function vibrate(duration) {
+    if (navigator.vibrate) {
+        navigator.vibrate(duration);
+    }
+}
+
 function swipeCard(direction) {
     if (isSwiping) return;
     
     isSwiping = true;
-    navigator.vibrate(200);
+    vibrate(200);
 
     const screenWidth = window.innerWidth;
     const translateX = direction == 4 ? screenWidth : -screenWidth;
@@ -269,17 +275,17 @@ mainCard.addEventListener('touchcancel', stopTouch);
 
 btn0.addEventListener('touchend', function() {
     setSelectBox(0);
-    navigator.vibrate(200);
+    vibrate(200);
 });
 btn1.addEventListener('touchend', function() {
     setSelectBox(1);
-    navigator.vibrate(200);
+    vibrate(200);
 });
 btn2.addEventListener('touchend', function() {
     setSelectBox(2);
-    navigator.vibrate(200);
+    vibrate(200);
 });
 btn3.addEventListener('touchend', function() {
     setSelectBox(3);
-    navigator.vibrate(200);
+    vibrate(200);
 });
