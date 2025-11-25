@@ -142,9 +142,38 @@ function unselectBox() {
     btn3.style.filter = 'invert(0)';
 }
 
-function vibrate(duration) {
-    if (navigator.vibrate) {
-        navigator.vibrate(duration);
+function vibrate(type) {
+    if (window.Telegram.WebApp.HapticFeedback) {
+        const webApp = window.Telegram.WebApp;
+        
+        switch(type) {
+            case 'light':
+                webApp.HapticFeedback.impactOccurred('light');
+                break;
+
+            case 'medium':
+                webApp.HapticFeedback.impactOccurred('medium');
+                break;
+
+            case 'heavy':
+                webApp.HapticFeedback.impactOccurred('heavy');
+                break;
+
+            case 'success':
+                webApp.HapticFeedback.notificationOccurred('success');
+                break;
+
+            case 'error':
+                webApp.HapticFeedback.notificationOccurred('error');
+                break;
+                
+            case 'warning':
+                webApp.HapticFeedback.notificationOccurred('warning');
+                break;
+        }
+
+    } else if (navigator.vibrate) {
+        navigator.vibrate(200);
     }
 }
 
@@ -152,7 +181,7 @@ function swipeCard(direction) {
     if (isSwiping) return;
     
     isSwiping = true;
-    vibrate(200);
+    vibrate('light');
 
     const screenWidth = window.innerWidth;
     const translateX = direction == 4 ? screenWidth : -screenWidth;
@@ -275,17 +304,17 @@ mainCard.addEventListener('touchcancel', stopTouch);
 
 btn0.addEventListener('touchend', function() {
     setSelectBox(0);
-    vibrate(200);
+    vibrate('light');
 });
 btn1.addEventListener('touchend', function() {
     setSelectBox(1);
-    vibrate(200);
+    vibrate('light');
 });
 btn2.addEventListener('touchend', function() {
     setSelectBox(2);
-    vibrate(200);
+    vibrate('light');
 });
 btn3.addEventListener('touchend', function() {
     setSelectBox(3);
-    vibrate(200);
+    vibrate('light');
 });
