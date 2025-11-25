@@ -1,16 +1,16 @@
-if (window.Telegram.WebApp) {
-    const webApp = window.Telegram.WebApp;
-    const isMobile = /ios|android/i.test(webApp.platform.toLowerCase());
+// if (window.Telegram.WebApp) {
+//     const webApp = window.Telegram.WebApp;
+//     const isMobile = /ios|android/i.test(webApp.platform.toLowerCase());
 
-    if (parseFloat(webApp.version) >= 8.0) {
-        webApp.requestFullscreen();
-    }
-    webApp.expand();
+//     if (parseFloat(webApp.version) >= 8.0) {
+//         webApp.requestFullscreen();
+//     }
+//     webApp.expand();
 
-    if (!isMobile) {
-        window.location.href = './pc_index.html';
-    }
-}
+//     if (!isMobile) {
+//         window.location.href = './pc_index.html';
+//     }
+// }
 
 let mainCard = document.querySelector('.main-card');
 let nextCard = document.querySelector('.next-card');
