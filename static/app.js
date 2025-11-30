@@ -7,9 +7,9 @@ if (window.Telegram.WebApp) {
     }
     webApp.expand();
 
-    // if (!isMobile) {
-    //     window.location.href = './pc_index.html';
-    // }
+    if (!isMobile) {
+        window.location.href = './pc_index.html';
+    }
 }
 
 let mainCard = document.querySelector('.main-card');
